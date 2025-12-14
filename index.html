@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Princess!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background-color: #8b0000;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Heart animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            transform: rotate(45deg);
+            opacity: 0;
+            animation: float 15s infinite linear;
+        }
+
+        .heart:before, .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes float {
+            0% {
+                top: 110%;
+                opacity: 0;
+                transform: rotate(45deg) scale(0.5);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                top: -10%;
+                opacity: 0;
+                transform: rotate(45deg) scale(1.2);
+            }
+        }
+
+        /* Page styling */
+        .page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        .visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Main page */
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            animation: glow 2s infinite alternate;
+        }
+
+        .sub-title {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            font-weight: 300;
+            color: #ffebcd;
+        }
+
+        .gift-question {
+            font-size: 1.8rem;
+            margin: 40px 0 20px;
+            color: #ffd700;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-yes {
+            background: linear-gradient(to right, #ff7eb3, #ff65a3);
+            color: white;
+        }
+
+        .btn-no {
+            background: linear-gradient(to right, #7afcff, #42c5ff);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(to right, #ff7eb3, #ff65a3);
+            color: white;
+            margin-top: 30px;
+            padding: 12px 30px;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Gifts page */
+        .gifts-container {
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .gifts-title {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: #ffd700;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .gift-option {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gift-option:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .gift-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ff7eb3;
+        }
+
+        .gift-name {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .gift-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Gift content pages */
+        .content-container {
+            max-width: 800px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: left;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .content-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Letter styling */
+        .letter-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #f8f8f8;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin-top: 40px;
+            color: #ff7eb3;
+        }
+
+        /* Jar styling */
+        .jar-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .jar-item {
+            background: rgba(255, 126, 179, 0.3);
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .jar-item:hover {
+            background: rgba(255, 126, 179, 0.5);
+            transform: scale(1.05);
+        }
+
+        /* Album styling */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .album-item {
+            border-radius: 15px;
+            overflow: hidden;
+            height: 200px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .album-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .album-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .album-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .album-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .song-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 30px;
+            background: linear-gradient(to right, #1e90ff, #4169e1);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .song-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .song-link i {
+            margin-right: 10px;
+        }
+
+        /* No page styling */
+        .no-message {
+            font-size: 2rem;
+            margin: 30px 0;
+            color: #ffd700;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+            }
+            
+            .sub-title {
+                font-size: 1.4rem;
+            }
+            
+            .gifts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                padding: 12px 30px;
+            }
+            
+            .content-container {
+                padding: 25px;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff7eb3, 0 0 40px #ff7eb3;
+            }
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff7eb3, 0 0 40px #ff7eb3, 0 0 50px #ff7eb3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <!-- Main page -->
+    <div class="page visible" id="main-page">
+        <h1 class="main-title">HAPPY BIRTHDAY PRINCESS</h1>
+        <h2 class="sub-title">REMEMBER TO SMILE</h2>
+        
+        <div class="gift-question">Do you want to see your gifts?</div>
+        
+        <div class="buttons">
+            <button class="btn btn-yes" id="yes-btn">Yes</button>
+            <button class="btn btn-no" id="no-btn">No</button>
+        </div>
+    </div>
+
+    <!-- No page -->
+    <div class="page hidden" id="no-page">
+        <div class="content-container">
+            <h2 class="content-title">Hey Beautiful!</h2>
+            <p class="no-message">It's really cute that you clicked "No", but trust me, you'll love what I've prepared for you. Just go back and click "Yes" – it's worth it! 💖</p>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-back" id="back-from-no">Go Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gifts selection page -->
+    <div class="page hidden" id="gifts-page">
+        <h1 class="gifts-title">Your Birthday Gifts</h1>
+        <div class="gifts-container">
+            <div class="gifts-grid">
+                <div class="gift-option" id="letter-gift">
+                    <div class="gift-icon"><i class="fas fa-envelope-open-text"></i></div>
+                    <h3 class="gift-name">A Special Letter</h3>
+                    <p class="gift-desc">Open this heartfelt message just for you</p>
+                </div>
+                
+                <div class="gift-option" id="jar-gift">
+                    <div class="gift-icon"><i class="fas fa-jar"></i></div>
+                    <h3 class="gift-name">Reasons Jar</h3>
+                    <p class="gift-desc">Discover why I like you so much</p>
+                </div>
+                
+                <div class="gift-option" id="album-gift">
+                    <div class="gift-icon"><i class="fas fa-images"></i></div>
+                    <h3 class="gift-name">Memory Album</h3>
+                    <p class="gift-desc">Our best moments together</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <button class="btn btn-back" id="back-from-gifts">Back to Main</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Letter page -->
+    <div class="page hidden" id="letter-page">
+        <div class="content-container">
+            <h2 class="content-title">To My Favorite Lady</h2>
+            <div class="letter-content">
+                <p><strong>Happy Birthday 🌹✨</strong></p>
+                <p>Today is a quiet celebration of something rare — you.<br>
+                A reminder that the world was made softer, brighter, and more meaningful the moment you arrived in it.</p>
+                
+                <p>I hope this day wraps you in warmth and peace,<br>
+                that your heart feels seen, your smile feels effortless,<br>
+                and your spirit moves freely, just as it was meant to.</p>
+                
+                <p>You carry a beauty that doesn’t seek attention —<br>
+                it lives in your kindness, your grace, the way you leave light behind wherever you go.<br>
+                May this new year open doors aligned with your dreams,<br>
+                bring calm where there was waiting,<br>
+                and fill your days with moments that feel like answered prayers.</p>
+                
+                <p>May laughter find you easily,<br>
+                may love meet you gently but stay deeply,<br>
+                and may every step forward remind you of how deserving you are of life’s finest things.</p>
+                
+                <p>Enjoy today fully 🎉🌸<br>
+                Celebrate yourself without restraint,<br>
+                and know — truly know — that the world is better with you in it.<br>
+                Happy Birthday once again ✨💫<br>
+                May this chapter be beautiful, purposeful, and unforgettable.</p>
+                
+                <div class="signature">FROM ; NG'ANG'A NJOROGE</div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-back" id="back-from-letter">Back to Gifts</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jar page -->
+    <div class="page hidden" id="jar-page">
+        <div class="content-container">
+            <h2 class="content-title">I Like You Because...</h2>
+            <div class="jar-items">
+                <div class="jar-item">You're Kind</div>
+                <div class="jar-item">You're Charming</div>
+                <div class="jar-item">You're Stubborn</div>
+                <div class="jar-item">You're Loving</div>
+                <div class="jar-item">You're Kind Hearted</div>
+                <div class="jar-item">You're Pretty</div>
+                <div class="jar-item">You're Thoughtful</div>
+                <div class="jar-item">You're Intelligent</div>
+                <div class="jar-item">You're Genuine</div>
+                <div class="jar-item">You're Amazing</div>
+                <div class="jar-item">You're Special</div>
+                <div class="jar-item">You're One of a Kind</div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-back" id="back-from-jar">Back to Gifts</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Album page -->
+    <div class="page hidden" id="album-page">
+        <div class="content-container">
+            <h2 class="content-title">Our Best Moments</h2>
+            <p style="text-align: center; margin-bottom: 20px; font-size: 1.1rem;">Here are the best moments we've shared together. Each picture holds a special memory 💖</p>
+            
+            <div class="album-grid">
+                <div class="album-item">
+                    <img src="IMG_20250924_144830.jpg" alt="Beautiful memory">
+                    <div class="overlay">A beautiful moment</div>
+                </div>
+                <div class="album-item">
+                    <img src="IMG-20250925-WA0065.jpg" alt="Special memory">
+                    <div class="overlay">That special smile</div>
+                </div>
+                <div class="album-item">
+                    <img src="IMG_20250924_144854.jpg" alt="Happy memory">
+                    <div class="overlay">Pure happiness</div>
+                </div>
+                <div class="album-item">
+                    <img src="IMG-20250925-WA0064.jpg" alt="Lovely memory">
+                    <div class="overlay">Simply lovely</div>
+                </div>
+                <div class="album-item">
+                    <img src="IMG_20250918_203819.jpg" alt="Romantic memory">
+                    <div class="overlay">A romantic moment</div>
+                </div>
+                <div class="album-item">
+                    <img src="IMG_20250820_184907.jpg" alt="Joyful memory">
+                    <div class="overlay">Joyful times</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://youtu.be/rQ4uIRU8ya0" target="_blank" class="song-link">
+                    <i class="fas fa-music"></i> Listen to "Perfect Design  (Lyrics)
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-back" id="back-from-album">Back to Gifts</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        const heartsContainer = document.getElementById('hearts-container');
+        const heartsCount = 25;
+        
+        for (let i = 0; i < heartsCount; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Random position and animation delay
+            const leftPos = Math.random() * 100;
+            const delay = Math.random() * 15;
+            const duration = 15 + Math.random() * 10;
+            const size = 10 + Math.random() * 20;
+            
+            heart.style.left = `${leftPos}%`;
+            heart.style.animationDelay = `${delay}s`;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            
+            heartsContainer.appendChild(heart);
+        }
+        
+        // Page navigation
+        const mainPage = document.getElementById('main-page');
+        const noPage = document.getElementById('no-page');
+        const giftsPage = document.getElementById('gifts-page');
+        const letterPage = document.getElementById('letter-page');
+        const jarPage = document.getElementById('jar-page');
+        const albumPage = document.getElementById('album-page');
+        
+        // Buttons
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const backFromNoBtn = document.getElementById('back-from-no');
+        const backFromGiftsBtn = document.getElementById('back-from-gifts');
+        const backFromLetterBtn = document.getElementById('back-from-letter');
+        const backFromJarBtn = document.getElementById('back-from-jar');
+        const backFromAlbumBtn = document.getElementById('back-from-album');
+        
+        // Gift options
+        const letterGift = document.getElementById('letter-gift');
+        const jarGift = document.getElementById('jar-gift');
+        const albumGift = document.getElementById('album-gift');
+        
+        // Show a specific page
+        function showPage(pageToShow) {
+            // Hide all pages
+            const pages = [mainPage, noPage, giftsPage, letterPage, jarPage, albumPage];
+            pages.forEach(page => {
+                page.classList.remove('visible');
+                page.classList.add('hidden');
+            });
+            
+            // Show the requested page
+            pageToShow.classList.remove('hidden');
+            pageToShow.classList.add('visible');
+        }
+        
+        // Event listeners
+        yesBtn.addEventListener('click', () => showPage(giftsPage));
+        
+        noBtn.addEventListener('click', () => {
+            showPage(noPage);
+            // Move the "No" button when clicked (for fun)
+            noBtn.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
+        });
+        
+        backFromNoBtn.addEventListener('click', () => showPage(mainPage));
+        backFromGiftsBtn.addEventListener('click', () => showPage(mainPage));
+        backFromLetterBtn.addEventListener('click', () => showPage(giftsPage));
+        backFromJarBtn.addEventListener('click', () => showPage(giftsPage));
+        backFromAlbumBtn.addEventListener('click', () => showPage(giftsPage));
+        
+        // Gift options
+        letterGift.addEventListener('click', () => showPage(letterPage));
+        jarGift.addEventListener('click', () => showPage(jarPage));
+        albumGift.addEventListener('click', () => showPage(albumPage));
+        
+        // Add a birthday greeting in console
+        console.log("%c🎂 Happy Birthday to the most amazing princess! 🎂", "color: #ff7eb3; font-size: 18px; font-weight: bold;");
+        console.log("%cMay your day be filled with love, joy, and beautiful moments! 💖", "color: #ffd700; font-size: 14px;");
+        
+        // Playful "no" button movement on hover
+        noBtn.addEventListener('mouseover', () => {
+            // Only move if we're on the main page
+            if (mainPage.classList.contains('visible')) {
+                const moveX = Math.random() * 100 - 50;
+                const moveY = Math.random() * 100 - 50;
+                noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+        
+        // Add a click effect to jar items
+        document.addEventListener('DOMContentLoaded', function() {
+            const jarItems = document.querySelectorAll('.jar-item');
+            jarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.2) rotate(5deg)';
+                    this.style.backgroundColor = 'rgba(255, 126, 179, 0.7)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                        this.style.backgroundColor = 'rgba(255, 126, 179, 0.3)';
+                    }, 300);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
